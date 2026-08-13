@@ -22,6 +22,8 @@ A test typically looks like:
 
 ```lua
 local function testSomething()
+    TK.printSuite("StringsTest","Something")    -- display a test "header" for the asserts included in this func
+
     local result = someFunction()
 
     TK.assertEquals("expected", result, "result should match expected value")
@@ -32,12 +34,12 @@ Tests can then be grouped into a test runner:
 
 ```lua
 function runTests()
-    TK.init()
+    TK.init()       -- initialize results counters
 
     testSomething()
     testSomethingElse()
 
-    TK.showResult("MyAddon")
+    TK.showResult("MyAddon")    -- show results counter totals
 end
 ```
 
@@ -50,7 +52,9 @@ TestKit provides assertions for common unit-test requirements, including:
 ```lua
 TK.assertTrue(condition, message)
 TK.assertFalse(condition, message)
-TK.assertEquals(expected, actual, message)
+TK.assertEqual(expected, actual, message)
+TK.assertNil(value, message)
+TK.assertNotNil(value, message)
 ```
 
 Assertions should include a useful message describing what is being verified. This makes failures substantially easier to diagnose when running a larger test suite.
@@ -142,14 +146,16 @@ Good unit tests should also cover:
 For example:
 
 ```lua
-local function testRecursiveTable()
-    local t = {}
-    t.self = t
-
-    local result = formatTable(t)
-
-    TK.assertEquals("{self=<seen>}", result,
-        "recursive table reference should be detected")
+local function Strings_testNilPack()
+    local fn = "NilPack"
+    TK.printSuite("StringsTest",fn)
+    
+    local tbl1 = SF.NilPack(1,nil,"3",nil)
+    TK.assertEquals(tbl1.n, 4, "counted trailing nil")
+    TK.assertNil(tbl1[2], "first nil is saved")
+    TK.assertNil(tbl1[4], "second nil is saved")
+    TK.assertEquals(tbl1[1], 1, "first param was 1")
+    TK.assertEquals(tbl1[3], "3", "third param was '3'")
 end
 ```
 
