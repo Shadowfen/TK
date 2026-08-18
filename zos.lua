@@ -24,6 +24,10 @@ SLASH_COMMANDS = {}
 
 zo_floor = math.floor
 
+zo_loadstring = loadstring
+
+setfenv = function(...)
+end
 
 -- ------------------------------------------------------------
 -- addonManager
@@ -49,6 +53,10 @@ function addonManager:AddAddOnInfo(name, title, author, description, enabled, st
     return
 end
 
+-- ------------------------------------------------------------
+WINDOW_MANAGER = {
+    GetControlByName = function(self, name) end
+}
 -- ------------------------------------------------------------
 -- Strings and localization
 function zo_plainstrfind(text, pat)
